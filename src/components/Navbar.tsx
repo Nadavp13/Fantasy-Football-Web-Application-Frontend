@@ -3,6 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./Navbar.css";
 import Icon from "../assets/Icon.jpg";
+import Modal from "./ModalAuth";
 
 interface Props {
   onSelectItem: (item: string) => void;
@@ -78,13 +79,9 @@ const Navbar = ({ onSelectItem }: Props) => {
               </a>
             </li>
           </ul>
-          <form className="d-flex" role="search">
-            <button className="btn btn-navbar" type="button">
-              Login
-            </button>
-            <button className="btn btn-navbar" type="button">
-              Sign Up
-            </button>
+          <form className="d-flex">
+            <Modal modalName="Sign In" />
+            <Modal modalName="Sign Up" />
           </form>
         </div>
       </div>
