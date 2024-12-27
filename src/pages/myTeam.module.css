@@ -1,0 +1,56 @@
+.container {
+    padding: 20px;
+    background-color: #f9f9f9;
+  }
+  
+  .heading {
+    font-size: 2rem;
+    color: #333333;
+  }
+  
+  .dropdownWrapper {
+    margin-bottom: 20px;
+  }
+  
+  .formationTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    table-layout: fixed;
+    min-width: 250px;
+    max-width: 600px;
+  }
+  
+  .formationRow {
+    height: 50px;
+  }
+  
+  .formationCell {
+    text-align: center;
+    padding: 10px;
+  }
+  
+  .buttonRow {
+    display: auto;
+    justify-content: space-between; 
+    width: 100%; 
+  }
+  
+  .playerButton {
+    border: 1px solid #333333;
+    border-radius: 5px;
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: #ffffff;
+    font-size: 1rem;
+    cursor: pointer;
+    flex-grow: 1; 
+    max-width: 75px;
+    margin: 5px;
+  }
+  
+  
+  .playerButton:hover {
+    background-color: #0056b3;
+  }
+  
