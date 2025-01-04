@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./Navbar.css";
@@ -10,6 +11,7 @@ interface Props {
 }
 
 const Navbar = ({ onSelectItem }: Props) => {
+  const location = useLocation();
   const [activeItem, setActiveItem] = useState<string>("Home");
 
   const handleItemClick = (item: string) => {
@@ -37,46 +39,48 @@ const Navbar = ({ onSelectItem }: Props) => {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <a
-                className={`nav-link ${activeItem === "Home" ? "active" : ""}`}
-                href="#"
+              <Link
+                className={`nav-link ${
+                  location.pathname === "/" ? "active" : ""
+                }`}
+                to="/"
                 onClick={() => handleItemClick("Home")}
               >
                 Home
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a
+              <Link
                 className={`nav-link ${
-                  activeItem === "My Team" ? "active" : ""
+                  location.pathname === "/myteam" ? "active" : ""
                 }`}
-                href="#"
+                to="/myteam"
                 onClick={() => handleItemClick("My Team")}
               >
                 My Team
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a
+              <Link
                 className={`nav-link ${
-                  activeItem === "My Leagues" ? "active" : ""
+                  location.pathname === "/myleagues" ? "active" : ""
                 }`}
-                href="#"
+                to="/myleagues"
                 onClick={() => handleItemClick("My Leagues")}
               >
                 My Leagues
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a
+              <Link
                 className={`nav-link ${
-                  activeItem === "Players" ? "active" : ""
+                  location.pathname === "/players" ? "active" : ""
                 }`}
-                href="#"
+                to="/players"
                 onClick={() => handleItemClick("Players")}
               >
                 Players
-              </a>
+              </Link>
             </li>
           </ul>
           <form className="d-flex">
