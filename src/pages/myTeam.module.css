@@ -1,56 +1,173 @@
 .container {
-    padding: 20px;
-    background-color: #f9f9f9;
-  }
-  
-  .heading {
-    font-size: 2rem;
-    color: #333333;
-  }
-  
-  .dropdownWrapper {
-    margin-bottom: 20px;
-  }
-  
-  .formationTable {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px 0;
-    table-layout: fixed;
-    min-width: 250px;
-    max-width: 600px;
-  }
-  
-  .formationRow {
-    height: 50px;
-  }
-  
-  .formationCell {
-    text-align: center;
-    padding: 10px;
-  }
-  
-  .buttonRow {
-    display: auto;
-    justify-content: space-between; 
-    width: 100%; 
-  }
-  
-  .playerButton {
-    border: 1px solid #333333;
-    border-radius: 5px;
-    padding: 10px 15px;
-    background-color: #007bff;
-    color: #ffffff;
-    font-size: 1rem;
-    cursor: pointer;
-    flex-grow: 1; 
-    max-width: 75px;
-    margin: 5px;
-  }
-  
-  
-  .playerButton:hover {
-    background-color: #0056b3;
-  }
-  
+  display: flex;
+  padding: 20px;
+  background-color: #f9f9f9;
+}
+
+.leftSide {
+  flex: 1;
+}
+
+.heading {
+  font-size: 2rem;
+  color: #333333;
+}
+
+.dropdownWrapper {
+  margin-bottom: 20px;
+}
+
+.formationTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  table-layout: fixed;
+  min-width: 250px;
+  max-width: 600px;
+}
+
+.formationRow {
+  height: 50px;
+}
+
+.formationCell {
+  text-align: center;
+  padding: 10px;
+}
+
+.buttonRow {
+  display: auto;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.playerButton {
+  border: 1px solid #333333;
+  border-radius: 5px;
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: #ffffff;
+  font-size: 1rem;
+  cursor: pointer;
+  flex-grow: 1;
+  max-width: 75px;
+  margin: 5px;
+}
+
+.playerButton:hover {
+  background-color: #0056b3;
+}
+
+.rightSide {
+  margin-left: 40px;
+  flex: 1;
+}
+
+.filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.filterButton {
+  padding: 5px 10px;
+  background-color: #f1f1f1;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.filterButton:hover {
+  background-color: #ccc;
+}
+
+.clearFilterButton {
+  font-size: 0.9rem;
+  color: #007bff;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.playerList {
+  margin-top: 20px;
+  max-height: 400px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  padding: 10px;
+  background-color: #f9f9f9;
+}
+
+.playerNames {
+  list-style: none;
+  padding: 0;
+}
+
+.playerTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.playerHeader {
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-align: left;
+  padding: 10px;
+  background-color: #f1f1f1;
+  color: #333;
+}
+
+.playerItem {
+  border-bottom: 1px solid #ddd;
+}
+
+.playerHeader {
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-align: left;
+  padding: 10px;
+  background-color: #f1f1f1;
+  color: #333;
+  position: sticky;
+  top: 0;
+  z-index: 1; 
+  background-color: #ffffff; 
+}
+
+.playerNameContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.playerName {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.playerInfo {
+  font-size: 0.8rem;
+  color: #555;
+}
+
+.playerTeam,
+.playerPosition {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.playerPrice,
+.playerPoints {
+  text-align: center;
+  font-size: 1rem;
+  color: #333;
+}
+
+.playerPrice {
+  font-weight: bold;
+}
+
+.playerPoints {
+  font-weight: bold;
+  color: #007bff;
+}
