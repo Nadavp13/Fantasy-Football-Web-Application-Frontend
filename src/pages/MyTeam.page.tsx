@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import DropDown from "../components/DropDown";
 import axios from "axios";
-import { serverLink } from "../utils/constants/serverLink";
+import { playersLink, serverLink } from "../utils/constants/serverLink";
 import styles from "./MyTeam.module.css";
 
 const allFormations = {
@@ -30,6 +30,7 @@ const MyTeam = () => {
   const [filteredPlayers, setFilteredPlayers] = useState(players);
   const [selectedPosition, setSelectedPosition] = useState<string>("");
   const [selectedTeam, setSelectedTeam] = useState<string>("");
+  const [teamOptions, setTeamOptions] = useState<string[]>([]);
 
   const handleSelectFormation = (formation: Formation) => {
     setSelectedFormation(formation);
@@ -42,6 +43,12 @@ const MyTeam = () => {
         const response = await axios.get(serverLink);
         setPlayers(response.data);
         setFilteredPlayers(response.data);
+
+        // Extract unique teams and set them in state
+        const teams: string[] = Array.from(
+          new Set(response.data.map((player: { team: string }) => player.team))
+        );
+        setTeamOptions(["", ...teams, "Clear Filter"]);
       } catch (error) {
         console.error("Error fetching players data", error);
       }
@@ -78,7 +85,7 @@ const MyTeam = () => {
     : "Filter by Team";
 
   const positionOptions = ["", "GK", "DEF", "MID", "FWD", "Clear Filter"];
-  const teamOptions = ["", "Team A", "Team B", "Team C", "Clear Filter"]; // Replace with dynamic team names
+  //const teamOptions = ["", "Team A", "Team B", "Team C", "Clear Filter"]; // Replace with dynamic team names
 
   const handlePositionSelect = (position: string) => {
     if (position === "Clear Filter") {
