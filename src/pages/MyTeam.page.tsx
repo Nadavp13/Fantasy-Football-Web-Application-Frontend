@@ -24,6 +24,7 @@ const MyTeam = () => {
         team: string;
         price: number;
         totalPoints: number;
+        image: string;
       }[]
     | null
   >(null);
@@ -40,7 +41,7 @@ const MyTeam = () => {
   useEffect(() => {
     const fetchPlayers = async () => {
       try {
-        const response = await axios.get(serverLink);
+        const response = await axios.get(playersLink);
         setPlayers(response.data);
         setFilteredPlayers(response.data);
 
@@ -48,6 +49,7 @@ const MyTeam = () => {
         const teams: string[] = Array.from(
           new Set(response.data.map((player: { team: string }) => player.team))
         );
+        teams.sort();
         setTeamOptions(["", ...teams, "Clear Filter"]);
       } catch (error) {
         console.error("Error fetching players data", error);
@@ -168,6 +170,7 @@ const MyTeam = () => {
             <thead>
               <tr>
                 <th className={styles.playerHeader}>Player</th>
+                <th className={styles.playerHeader}></th>
                 <th className={styles.playerHeader}>Price</th>
                 <th className={styles.playerHeader}>Total Points</th>
               </tr>
@@ -184,6 +187,18 @@ const MyTeam = () => {
                           {player.position}
                         </span>
                       </div>
+                    </td>
+                    <td className={styles.playerImage}>
+                      {
+                      player.image ? (
+                        <img
+                          src={player.image.startsWith("http") ? player.image : `https://${player.image}`}
+                          alt={player.name}
+                          className={styles.playerImage}
+                        /> 
+                      ) : (
+                        <span>No Image</span>
+                      )}
                     </td>
                     <td className={styles.playerPrice}>${player.price}</td>
                     <td className={styles.playerPoints}>

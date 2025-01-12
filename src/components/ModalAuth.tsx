@@ -8,6 +8,8 @@ import { Button } from "@mui/base/Button";
 import { unstable_useModal as useModal } from "@mui/base/unstable_useModal";
 import Fade from "@mui/material/Fade";
 import "./ModalAuth.css";
+import { userLink, authLink } from "../utils/constants/serverLink";
+import axios from "axios";
 
 interface Props {
   modalName: string;
@@ -16,14 +18,19 @@ interface Props {
 export default function UseModalAuth({ modalName }: Props) {
   const [open, setOpen] = React.useState(false);
   const [step, setStep] = React.useState<"options" | "form">("options");
-  const [authMethod, setAuthMethod] = React.useState<
-    "Email" | "Google" | "Apple" | null
-  >(null);
+  const [authMethod, setAuthMethod] = React.useState<"Email" | "Google" | "Apple" | null>(null);
+
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [error, setError] = React.useState("");
 
   const handleOpen = () => {
     setOpen(true);
     setStep("options");
     setAuthMethod(null);
+    setEmail("");
+    setPassword("");
+    setError("");
   };
 
   const handleClose = () => setOpen(false);
@@ -31,6 +38,37 @@ export default function UseModalAuth({ modalName }: Props) {
   const handleOptionClick = (method: "Email" | "Google" | "Apple") => {
     setAuthMethod(method);
     setStep("form");
+  };
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+  };
+
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
+  };
+
+  const handleSignUp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email || !password) {
+      setError("Please enter both email and password.");
+      return;
+    }
+
+    try {
+      // Send sign-up request to your server
+      const response = await axios.post(userLink, {
+        email,
+        password,
+      });
+      if (response.status === 201) {
+        // Handle successful sign-up (e.g., close modal, show success message, etc.)
+        alert("Sign-up successful!");
+        setOpen(false);
+      }
+    } catch (error) {
+      setError("There was an error signing up. Please try again.");
+    }
   };
 
   return (
@@ -65,10 +103,7 @@ export default function UseModalAuth({ modalName }: Props) {
             <h2 id="transition-modal-title" className="modal-title">
               {modalName}
             </h2>
-            <div
-              id="transition-modal-description"
-              className="modal-description"
-            >
+            <div id="transition-modal-description" className="modal-description">
               {step === "options" ? (
                 <>
                   <button
@@ -97,19 +132,24 @@ export default function UseModalAuth({ modalName }: Props) {
                 </>
               ) : (
                 <>
-                  <form>
+                  <form onSubmit={handleSignUp}>
                     <input
-                      type="text"
+                      type="email"
                       placeholder="Email"
                       className="form-input"
+                      value={email}
+                      onChange={handleEmailChange}
                     />
                     <input
                       type="password"
                       placeholder="Password"
                       className="form-input"
+                      value={password}
+                      onChange={handlePasswordChange}
                     />
+                    {error && <p className="error-message">{error}</p>}
                     <button className="btn btn-submit btn-auth" type="submit">
-                      {authMethod} {modalName}
+                      Sign Up with Email
                     </button>
                   </form>
                   <button
@@ -145,6 +185,9 @@ interface ModalProps {
   onTransitionExited?: () => void;
   open: boolean;
 }
+
+// Modal components and other code as previously...
+
 
 const Modal = React.forwardRef(function Modal(
   props: ModalProps,
