@@ -3,6 +3,8 @@ import DropDown from "../components/DropDown";
 import axios from "axios";
 import { playersLink, serverLink } from "../utils/constants/serverLink";
 import styles from "./MyTeam.module.css";
+import clsx from "clsx";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const allFormations = {
   "4-4-2": [1, 4, 4, 2],
@@ -32,6 +34,16 @@ const MyTeam = () => {
   const [selectedPosition, setSelectedPosition] = useState<string>("");
   const [selectedTeam, setSelectedTeam] = useState<string>("");
   const [teamOptions, setTeamOptions] = useState<string[]>([]);
+  const [lastClickedPlayerLineupButton, setLastClickedPlayerLineupButton] = useState<string | null>(
+    null
+  );
+  const [lastClickedPlayer, setLastClickedPlayer] = useState<string | null>(
+    null
+  );
+  const [lineup, setLineup] = useState<{ [key: string]: string }>({});
+
+  
+  
 
   const handleSelectFormation = (formation: Formation) => {
     setSelectedFormation(formation);
@@ -105,6 +117,21 @@ const MyTeam = () => {
     }
   };
 
+  const handlePlayerSelect = (player: any) => {
+    if (!lastClickedPlayerLineupButton) return;
+    console.log(lastClickedPlayerLineupButton);
+    console.log(player);
+
+    setLineup((prevLineup) => ({
+      ...prevLineup,
+      [lastClickedPlayerLineupButton]: "https://" + player.image, 
+    }));
+
+    setLastClickedPlayerLineupButton(null);
+    setLastClickedPlayer(null);
+  };
+  
+
   return (
     <div className={styles.container}>
       <div className={styles.leftSide}>
@@ -131,12 +158,32 @@ const MyTeam = () => {
                       return (
                         <button
                           key={colIndex}
-                          className={styles.playerButton}
+                          className={clsx(styles.playerButtonLineup, {
+                            [styles.clickedButton]:
+                              lastClickedPlayerLineupButton === `${rowIndex + 1}-${colIndex + 1}`,
+                            [styles.selected]:
+                              selectedPosition === positionNames[rowIndex],
+                          })}
                           id={`${position}-${rowIndex + 1}-${colIndex + 1}`}
+                          onClick={() => {
+                            const buttonId = `${rowIndex + 1}-${colIndex + 1}`;
+                            if (lastClickedPlayerLineupButton === buttonId) {
+                              setLastClickedPlayerLineupButton(null);
+                            } else {
+                              setLastClickedPlayerLineupButton(buttonId);
+                              handlePositionSelect(positionOptions[rowIndex + 1]);
+                            }
+                          }}
                         >
+                          <img
+                            className={styles.playerImageLineup}
+                            src={lineup[`${rowIndex + 1}-${colIndex + 1}`] || "../src/assets/playerBlankTemplate.jpg"}
+                            alt="Player"
+                          />
                           Player {rowIndex + 1}-{colIndex + 1}
                         </button>
                       );
+                      
                     })}
                   </div>
                 </td>
@@ -153,8 +200,10 @@ const MyTeam = () => {
               items={positionOptions}
               heading={positionButtonText}
               onSelectItem={handlePositionSelect}
+              disabled={lastClickedPlayerLineupButton !== null}
             />
           </div>
+
           <div>
             <DropDown
               items={teamOptions}
@@ -173,45 +222,59 @@ const MyTeam = () => {
                 <th className={styles.playerHeader}></th>
                 <th className={styles.playerHeader}>Price</th>
                 <th className={styles.playerHeader}>Total Points</th>
+                <th className={styles.playerHeader}></th>
               </tr>
             </thead>
             <tbody>
-              {filteredPlayers ? (
-                filteredPlayers.map((player, index) => (
-                  <tr key={index} className={styles.playerItem}>
-                    <td className={styles.playerNameContainer}>
-                      <div className={styles.playerName}>{player.name}</div>
-                      <div className={styles.playerInfo}>
-                        <span className={styles.playerTeam}>{player.team}</span>
-                        <span className={styles.playerPosition}>
-                          {player.position}
-                        </span>
-                      </div>
-                    </td>
-                    <td className={styles.playerImage}>
-                      {
-                      player.image ? (
-                        <img
-                          src={player.image.startsWith("http") ? player.image : `https://${player.image}`}
-                          alt={player.name}
-                          className={styles.playerImage}
-                        /> 
-                      ) : (
-                        <span>No Image</span>
-                      )}
-                    </td>
-                    <td className={styles.playerPrice}>${player.price}</td>
-                    <td className={styles.playerPoints}>
-                      {player.totalPoints} pts
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan={3}>Loading players...</td>
-                </tr>
-              )}
-            </tbody>
+  {filteredPlayers ? (
+    filteredPlayers.map((player, index) => (
+      <tr key={index} className={styles.playerItem}>
+        <td className={styles.playerNameContainer}>
+          <div className={styles.playerName}>{player.name}</div>
+          <div className={styles.playerInfo}>
+            <span className={styles.playerTeam}>{player.team}</span>
+            <span className={styles.playerPosition}>
+              {player.position}
+            </span>
+          </div>
+        </td>
+        <td className={styles.playerImage}>
+          {player.image ? (
+            <img
+              src={
+                player.image.startsWith("http")
+                  ? player.image
+                  : `https://${player.image}`
+              }
+              alt={player.name}
+              className={styles.playerImage}
+            />
+          ) : (
+            <span>No Image</span>
+          )}
+        </td>
+        <td className={styles.playerPoints}>
+          {player.totalPoints} pts
+        </td>
+        <td className={styles.playerPrice}>${player.price}</td>
+        <td>
+          <button
+            className={styles.selectPlayerButton}
+            disabled={!lastClickedPlayerLineupButton}
+            onClick={() => handlePlayerSelect(player)}
+          >
+            {lastClickedPlayerLineupButton ? "Select Player" : "Disabled"}
+          </button>
+        </td>
+      </tr>
+    ))
+  ) : (
+    <tr>
+      <td colSpan={5}>Loading players...</td>
+    </tr>
+  )}
+</tbody>
+
           </table>
         </div>
       </div>

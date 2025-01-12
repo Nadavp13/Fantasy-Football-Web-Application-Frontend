@@ -4,12 +4,14 @@ interface Props<T> {
   items: T[];
   heading: string;
   onSelectItem: (item: T) => void;
+  disabled?: boolean;
 }
 
 const DropDown = <T extends string>({
   items,
   heading,
   onSelectItem,
+  disabled,
 }: Props<T>) => {
   return (
     <div className="dropdown">
@@ -18,6 +20,7 @@ const DropDown = <T extends string>({
         type="button"
         data-bs-toggle="dropdown"
         aria-expanded="false"
+        disabled={disabled}
       >
         {heading}
       </button>
